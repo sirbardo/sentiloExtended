@@ -1,0 +1,1 @@
+SENTILO is a tool to perform opinion holder and topic detection. It uses a heuristical graph mining approach that reuses FRED, a machine reader for the Semantic Web, and appropriate rules to mine FRED's graphs.

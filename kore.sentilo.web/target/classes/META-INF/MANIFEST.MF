@@ -1,0 +1,47 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1517849923536
+Build-Jdk: 1.8.0_162
+Built-By: lucapitzalis
+Bundle-Category: Tipalo
+Bundle-ClassPath: .,jersey-json-1.12.jar,jettison-1.3.jar,jackson-core-a
+ sl-1.9.2.jar
+Bundle-Description: HTTP endpoints of Sentilo.
+Bundle-ManifestVersion: 2
+Bundle-Name: K~ore Sentilo Web Home
+Bundle-SymbolicName: kore.sentilo.web
+Bundle-Vendor: Tipalo
+Bundle-Version: 0.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: *;scope=compile|runtime;inline=false;artifactId=jersey
+ -json|jettison|jackson-core-asl
+Embed-Transitive: true
+Embedded-Artifacts: jersey-json-1.12.jar;g="com.sun.jersey";a="jersey-js
+ on";v="1.12",jettison-1.3.jar;g="org.codehaus.jettison";a="jettison";v=
+ "1.3",jackson-core-asl-1.9.2.jar;g="org.codehaus.jackson";a="jackson-co
+ re-asl";v="1.9.2"
+Ignore-Package: com.sun.xml.bind.v2.model.runtime,com.sun.xml.bind.v2.ru
+ ntime.property,com.sun.xml.bind.v2.runtime.unmarshaller,com.sun.xml.bin
+ d.v2.runtime,com.sun.xml.bind.v2.model.core
+Import-Package: com.hp.hpl.jena.rdf.model,com.hp.hpl.jena.vocabulary,com
+ .sun.jersey.api.view,com.sun.jersey.core.provider,com.sun.jersey.core.p
+ rovider.jaxb,com.sun.jersey.core.spi.component,com.sun.jersey.core.util
+ ,com.sun.jersey.localization,com.sun.jersey.spi,com.sun.jersey.spi.inje
+ ct,freemarker.cache;version="0.1.0",it.cnr.istc.stlab.tipalo.api;versio
+ n="0.1.0",it.cnr.istc.stlab.tipalo.api.impl;version="0.1.0",it.cnr.istc
+ .stlab.tipalo.api.jena;version="0.1.0",it.cnr.istc.stlab.tipalo.drt.fre
+ d.graphviz;version="0.1.0",it.cnr.istc.stlab.tipalo.web;version="0.1.0"
+ ,it.cnr.istc.stlab.tipalo.web.resource;version="0.1.0",it.cnr.istc.stla
+ b.tipalo.web.writers;version="0.1.0",javax.servlet,javax.ws.rs,javax.ws
+ .rs.core,javax.ws.rs.ext,javax.xml.bind,javax.xml.bind.annotation,javax
+ .xml.bind.annotation.adapters,javax.xml.bind.attachment,javax.xml.names
+ pace,javax.xml.parsers,javax.xml.stream,javax.xml.stream.events,javax.x
+ ml.stream.util,javax.xml.transform,javax.xml.transform.dom,javax.xml.tr
+ ansform.stream,javax.xml.validation,org.apache.clerezza.rdf.core,org.ap
+ ache.clerezza.rdf.core.access,org.apache.clerezza.rdf.core.impl,org.apa
+ che.clerezza.rdf.core.serializedform,org.apache.clerezza.rdf.core.sparq
+ l,org.apache.clerezza.rdf.ontologies,org.codehaus.jackson.jaxrs;version
+ ="1.9.2",org.codehaus.jackson.map;version="1.9.2",org.osgi.framework;ve
+ rsion="1.4.0",org.osgi.service.component;version="1.0.0",org.slf4j;vers
+ ion="1.6.1",org.w3c.dom,org.xml.sax
+Service-Component: OSGI-INF/serviceComponents.xml
+Tool: Bnd-1.50.0

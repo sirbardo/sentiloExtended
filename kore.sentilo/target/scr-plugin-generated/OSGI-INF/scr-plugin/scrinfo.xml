@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component enabled="true" immediate="true" name="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo" activate="activate" deactivate="deactivate">
+        <implementation class="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo"/>
+        <service servicefactory="false">
+            <provide interface="it.cnr.istc.stlab.tipalo.api.FredWrapper"/>
+        </service>
+        <property name="it.cnr.istc.stlab.kapi.ontologygenerator.fred.stanbol.location" type="String" value="" private="false"/>
+        <property name="it.cnr.istc.stlab.sentilo.sentiverb.location" type="String" value="" private="false"/>
+        <property name="it.cnr.istc.stlab.sentilo.senticnet.location" type="String" value="" private="false"/>
+        <property name="it.cnr.istc.stlab.sentilo.sentiwordnet.location" type="String" value="" private="false"/>
+        <property name="it.cnr.istc.stlab.sentilo.sensitiveness.location" type="String" value="" private="false"/>
+        <property name="it.cnr.istc.stlab.sentilo.frequency_based.location" type="String" value="" private="false"/>
+        <property name="service.vendor" type="String" value="STLab, ISTC-CNR" private="true"/>
+        <property name="service.pid" value="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo" private="false"/>
+        <reference name="ontologyGenerator" interface="it.cnr.istc.stlab.tipalo.api.OntologyGenerator" cardinality="1..1" policy="static" bind="bindOntologyGenerator" unbind="unbindOntologyGenerator" checked="true" strategy="event"/>
+        <reference name="typeSelector" interface="it.cnr.istc.stlab.tipalo.api.TypeSelector" cardinality="1..1" policy="static" bind="bindTypeSelector" unbind="unbindTypeSelector" checked="true" strategy="event"/>
+        <reference name="foundationalTypeMatcher" interface="it.cnr.istc.stlab.tipalo.api.FoundationalTypeMatcher" cardinality="1..1" policy="static" bind="bindFoundationalTypeMatcher" unbind="unbindFoundationalTypeMatcher" checked="true" strategy="event"/>
+        <reference name="fredWrapper" interface="it.cnr.istc.stlab.tipalo.api.FredWrapper" cardinality="1..n" policy="dynamic" bind="bind" unbind="unbind" checked="true" strategy="event"/>
+        <reference name="tcManager" interface="org.apache.clerezza.rdf.core.access.TcManager" cardinality="1..1" policy="static" bind="bindTcManager" unbind="unbindTcManager" checked="true" strategy="event"/>
+        <reference name="sentenceModelProvider" interface="it.cnr.istc.stlab.tipalo.api.SentenceModelProvider" cardinality="1..1" policy="static" bind="bindSentenceModelProvider" unbind="unbindSentenceModelProvider" checked="true" strategy="event"/>
+        <reference name="parser" interface="org.apache.clerezza.rdf.core.serializedform.Parser" cardinality="1..1" policy="static" bind="bindParser" unbind="unbindParser" checked="true" strategy="event"/>
+    </scr:component>
+</components>

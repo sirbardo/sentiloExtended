@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1517849922310
+Build-Jdk: 1.8.0_162
+Built-By: lucapitzalis
+Bundle-Category: Tipalo
+Bundle-Description: Sentilo Indexing utils based on Apache Stanbol Entit
+ yhub.
+Bundle-ManifestVersion: 2
+Bundle-Name: Sentilo Indexing utils
+Bundle-SymbolicName: ktools.sentilo.index
+Bundle-Vendor: Tipalo
+Bundle-Version: 0.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: *;scope=compile|runtime;inline=false;artifactId=jersey
+ -json|jettison|jackson-core-asl
+Embed-Transitive: true
+Import-Package: it.cnr.istc.stlab.tipalo.api;version="0.1.0",org.apache.
+ clerezza.rdf.core,org.apache.clerezza.rdf.core.serializedform,org.slf4j
+ ;version="1.5.2"
+Service-Component: OSGI-INF/serviceComponents.xml
+Tool: Bnd-1.50.0

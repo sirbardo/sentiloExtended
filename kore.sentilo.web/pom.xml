@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+        <groupId>it.cnr.istc.stlab</groupId>
+        <artifactId>tipalo.parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+	<relativePath>../../tipalo.parent</relativePath>
+  </parent>
+
+  <groupId>it.cnr.istc.stlab</groupId>
+  <artifactId>kore.sentilo.web</artifactId>
+  <packaging>bundle</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>K~ore Sentilo Web Home</name>
+  <description>HTTP endpoints of Sentilo.</description>
+
+  <build>
+    <!-- make it an OSGi bundle -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-scr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+              it.cnr.istc.stlab.tipalo.drt.fred.web.*
+            </Export-Package>
+            <Embed-Dependency>*;scope=compile|runtime;inline=false;artifactId=jersey-json|jettison|jackson-core-asl
+            </Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
+            <Import-Package>
+            !org.apache.felix.http.jetty, 
+            !org.mortbay.jetty.*,
+            !com.sun.xml.bind.v2.*,
+            *
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- AL20 License -->
+            <exclude>src/license/THIRD-PARTY.properties</exclude>
+            
+            <!-- MIT License  -->
+            <exclude>src/main/resources/org/apache/stanbol/rules/web/static/jquery/jquery-1.6.1</exclude>
+          </excludes>
+        </configuration>
+      </plugin>      
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    
+    <!-- Jersey, servlet and freemarker -->
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-multipart</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+
+    <!-- OSGi tax -->
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.scr.annotations</artifactId>
+    </dependency>
+    
+    <!-- Clerezza dependencies -->
+    <dependency>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.serializer</artifactId>
+    </dependency>
+
+    <!-- Tipalo -->
+    <dependency>
+      <groupId>it.cnr.istc.stlab</groupId>
+      <artifactId>tipalo.api</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>it.cnr.istc.stlab</groupId>
+      <artifactId>tipalo.drt.fred</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>it.cnr.istc.stlab</groupId>
+      <artifactId>tipalo.web.base</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hp.hpl.jena</groupId>
+      <artifactId>jena</artifactId>
+    </dependency>
+    
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    
+    <dependency> 
+		<!-- we use log4j 1.2 -->
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.6.1</version>
+		<scope>test</scope>
+		
+	</dependency>
+    
+  </dependencies>
+
+</project>

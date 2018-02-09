@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component enabled="true" immediate="true" name="it.cnr.istc.stlab.kore.sentilo.web.SentiloFragment" activate="activate">
+        <implementation class="it.cnr.istc.stlab.kore.sentilo.web.SentiloFragment"/>
+        <service servicefactory="false">
+            <provide interface="it.cnr.istc.stlab.tipalo.web.WebFragment"/>
+        </service>
+        <property name="service.vendor" type="String" value="STLab, ISTC-CNR" private="true"/>
+        <property name="service.pid" value="it.cnr.istc.stlab.kore.sentilo.web.SentiloFragment" private="false"/>
+    </scr:component>
+</components>

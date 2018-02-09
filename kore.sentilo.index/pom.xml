@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>it.cnr.istc.stlab</groupId>
+    <artifactId>tipalo.parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../../tipalo.parent</relativePath>
+  </parent>
+
+  <groupId>it.cnr.istc.stlab</groupId>
+  <artifactId>ktools.sentilo.index</artifactId>
+  <packaging>bundle</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>Sentilo Indexing utils</name>
+  <description>Sentilo Indexing utils based on Apache Stanbol Entityhub.</description>
+
+  <build>
+    <!-- make it an OSGi bundle -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-scr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+              	it.cnr.istc.stlab.ktools.sentilo.index.*
+            </Export-Package>
+            <Embed-Dependency>*;scope=compile|runtime;inline=false;artifactId=jersey-json|jettison|jackson-core-asl
+            </Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
+            <Import-Package>
+            !org.apache.felix.http.jetty, 
+            !org.mortbay.jetty.*,
+            !com.sun.xml.bind.v2.*,
+			!org.codehaus.jackson.*,
+            *
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+      </plugin>       
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    
+    <!-- OSGi tax -->
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.scr.annotations</artifactId>
+    </dependency>
+
+    <!-- Tipalo -->    
+    <dependency>
+      <groupId>it.cnr.istc.stlab</groupId>
+      <artifactId>tipalo.api</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>it.cnr.istc.stlab</groupId>
+      <artifactId>tipalo.drt.fred</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+<!-- Clerezza -->
+    <dependency>
+    	<groupId>org.apache.clerezza</groupId>
+    	<artifactId>rdf.jena.parser</artifactId>
+  	</dependency>
+  	<dependency>
+    	<groupId>org.apache.clerezza</groupId>
+    	<artifactId>rdf.jena.serializer</artifactId>
+	</dependency>
+  	<dependency>
+    	<groupId>org.apache.clerezza</groupId>
+    	<artifactId>rdf.ontologies</artifactId>
+  	</dependency>
+  	<dependency>
+    	<groupId>org.apache.clerezza</groupId>
+    	<artifactId>rdf.rdfjson</artifactId>
+  	</dependency>
+    <dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.core</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.jena.sparql</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.simple.storage</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.utils</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.jena.storage</artifactId>
+		<version>0.5-incubating</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.clerezza</groupId>
+		<artifactId>rdf.jena.tdb.storage</artifactId>
+		<version>0.5-incubating</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<!-- OpenNLP -->
+	<dependency>
+		<groupId>org.apache.opennlp</groupId>
+ 		<artifactId>opennlp-tools</artifactId>
+ 		<version>1.5.2-incubating</version>
+	</dependency>
+	
+	<!-- Tipalo -->
+	<dependency>
+		<groupId>it.cnr.istc.stlab</groupId>
+ 		<artifactId>tipalo.jobs</artifactId>
+ 		<version>0.1-SNAPSHOT</version>
+	</dependency>
+
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency> 
+		<!-- we use log4j 1.2 -->
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.6.1</version>
+		<scope>test</scope>
+	</dependency>
+    
+  </dependencies>
+
+</project>

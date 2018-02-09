@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo" name="%it.cnr.istc.stlab.ktools.sentilo.FREDSentilo.name" description="%it.cnr.istc.stlab.ktools.sentilo.FREDSentilo.description">
+        <AD id="it.cnr.istc.stlab.kapi.ontologygenerator.fred.stanbol.location" type="String" default="" name="%it.cnr.istc.stlab.kapi.ontologygenerator.fred.stanbol.location.name" description="%it.cnr.istc.stlab.kapi.ontologygenerator.fred.stanbol.location.description"/>
+        <AD id="it.cnr.istc.stlab.sentilo.sentiverb.location" type="String" default="" name="%it.cnr.istc.stlab.sentilo.sentiverb.location.name" description="%it.cnr.istc.stlab.sentilo.sentiverb.location.description"/>
+        <AD id="it.cnr.istc.stlab.sentilo.senticnet.location" type="String" default="" name="%it.cnr.istc.stlab.sentilo.senticnet.location.name" description="%it.cnr.istc.stlab.sentilo.senticnet.location.description"/>
+        <AD id="it.cnr.istc.stlab.sentilo.sentiwordnet.location" type="String" default="" name="%it.cnr.istc.stlab.sentilo.sentiwordnet.location.name" description="%it.cnr.istc.stlab.sentilo.sentiwordnet.location.description"/>
+        <AD id="it.cnr.istc.stlab.sentilo.sensitiveness.location" type="String" default="" name="%it.cnr.istc.stlab.sentilo.sensitiveness.location.name" description="%it.cnr.istc.stlab.sentilo.sensitiveness.location.description"/>
+        <AD id="it.cnr.istc.stlab.sentilo.frequency_based.location" type="String" default="" name="%it.cnr.istc.stlab.sentilo.frequency_based.location.name" description="%it.cnr.istc.stlab.sentilo.frequency_based.location.description"/>
+    </OCD>
+    <Designate pid="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo">
+        <Object ocdref="it.cnr.istc.stlab.ktools.sentilo.FREDSentilo"/>
+    </Designate>
+</metatype:MetaData>

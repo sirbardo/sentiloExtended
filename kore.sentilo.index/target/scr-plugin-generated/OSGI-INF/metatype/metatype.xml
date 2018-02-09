@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl" name="%it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl.name" description="%it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl.description">
+        <AD id="it.cnr.istc.stlab.ktools.sentilo.index.entityhub" type="String" default="http://localhost:9494/entityhub/entity" name="%it.cnr.istc.stlab.ktools.sentilo.index.entityhub.name" description="%it.cnr.istc.stlab.ktools.sentilo.index.entityhub.description"/>
+    </OCD>
+    <Designate pid="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl">
+        <Object ocdref="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl"/>
+    </Designate>
+</metatype:MetaData>

@@ -1,0 +1,8 @@
+vnpattern(take,10050000, agent:'Agent' op-sens=1 fact-sens=null, patient:'Theme' op-sens=null fact-sens=null, into:'Location' op-sens=1 fact-sens=null)
+vnpattern(gain,13051100, agent:'Agent' op-sens=1 fact-sens=p, patient:'Theme' op-sens=null fact-sens=null)
+vnpattern(run,18040000, into:'Location' op-sens=null fact-sens=null, agent:'Theme' op-sens=null fact-sens=null)
+vnpattern(film,25040000, agent:'Agent' op-sens=1 fact-sens=null, patient:'Theme' op-sens=null fact-sens=null)
+vnpattern(link,22040000, agent:'Agent' op-sens=1 fact-sens=null, patient:'Patient' op-sens=1 fact-sens=null)
+vnpattern(abandon,51020000, agent:'Theme' op-sens=1 fact-sens=null, patient:'Source' op-sens=null fact-sens=n)
+vnpattern(say,51020000, agent:'Theme' op-sens=1 fact-sens=null, patient:'Source' op-sens=null fact-sens=n, into:'Topic' op-sens=1 fact-sens=null)
+vnpattern(play,020000, agent:'Agent' op-sens=1 fact-sens=p, patient:'Source' op-sens=null fact-sens=n, into:'Topic' op-sens=1 fact-sens=null)

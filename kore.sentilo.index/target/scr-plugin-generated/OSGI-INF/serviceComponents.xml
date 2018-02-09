@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component enabled="false" immediate="false" name="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl">
+        <implementation class="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl"/>
+        <service servicefactory="false">
+            <provide interface="it.cnr.istc.stlab.ktools.sentilo.api.TopicIndex"/>
+        </service>
+        <property name="it.cnr.istc.stlab.ktools.sentilo.index.entityhub" type="String" value="http://localhost:9494/entityhub/entity"/>
+        <property name="service.vendor" type="String" value="STLab, ISTC-CNR"/>
+        <property name="service.pid" value="it.cnr.istc.stlab.ktools.sentilo.impl.TopicIndexImpl"/>
+        <reference name="parser" interface="org.apache.clerezza.rdf.core.serializedform.Parser" cardinality="1..1" policy="static" bind="bindParser" unbind="unbindParser"/>
+    </scr:component>
+</components>
