@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/java" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="101" level="project" />
+    <orderEntry type="library" name="bundle38" level="project" />
+    <orderEntry type="library" name="203" level="project" />
+    <orderEntry type="library" name="bundle" level="project" />
+    <orderEntry type="library" name="152" level="project" />
+    <orderEntry type="library" name="202" level="project" />
+    <orderEntry type="library" name="153" level="project" />
+    <orderEntry type="library" name="201" level="project" />
+    <orderEntry type="library" name="target11" level="project" />
+    <orderEntry type="library" name="bundle63" level="project" />
+    <orderEntry type="library" name="tipalo.api-0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="10" level="project" />
+    <orderEntry type="library" name="15" level="project" />
+    <orderEntry type="library" name="20" level="project" />
+    <orderEntry type="library" name="bundle.jar-embedded2" level="project" />
+    <orderEntry type="library" name="103" level="project" />
+    <orderEntry type="library" name="bundle4" level="project" />
+    <orderEntry type="library" name="151" level="project" />
+    <orderEntry type="library" name="target3" level="project" />
+    <orderEntry type="library" name="bundle5" level="project" />
+    <orderEntry type="library" name="target13" level="project" />
+    <orderEntry type="library" name="bundle8" level="project" />
+    <orderEntry type="library" name="102" level="project" />
+    <orderEntry type="library" name="tipalo.api-0.1-SNAPSHOT1" level="project" />
+    <orderEntry type="module" module-name="main16" />
+    <orderEntry type="module" module-name="main1" />
+    <orderEntry type="module" module-name="main20" />
+  </component>
+</module>

@@ -79,7 +79,14 @@ public class Sentilo {
 	private HashMap sensitiveness = null;
 	private FrequencyBasedWSD frequencyBasedWSD = null;
 	private HashMap tokenToIdx = null;
-	private Map<String, Vector<Double>> tokenToMoods = null;
+	private Map<String, Vector<Double>> adjToMoods = null;
+	private Map<String, Vector<Double>> verbToMoods = null;
+	private Map<String, Vector<Double>> nounToMoods = null;
+	private Map<String, Vector<Double>> advToMoods = null;
+
+	public enum Mood{
+		AFRAID,	AMUSED,	ANGRY,	ANNOYED, DONT_CARE,	HAPPY,	INSPIRED, SAD
+	}
 
 	/* Prepare the content of the FILTER statement for the SPARQL query */
 	private String subquery(Vector v) {
@@ -2208,26 +2215,80 @@ public class Sentilo {
 		this.sensitiveness = sensitiveness;
 		this.frequencyBasedWSD = frequencyBasedWSD;
 		this.USEDEFAULTSCORESTRATEGY = (useSenticnet == true) ? false : true;
-		this.tokenToMoods = new HashMap();
-
+		this.adjToMoods = new HashMap();
+		this.advToMoods = new HashMap();
+		this.verbToMoods = new HashMap();
+		this.nounToMoods = new HashMap();
 
 
 		try{
 
-            //String url = ;
-            //System.out.println(url + "DepecheMood_tfidf.txt");
 			InputStream depecheMood = Sentilo.class.getResourceAsStream("/DepecheMood_tfidf.txt");
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(depecheMood));
 			String lineMood = null;
 
-			reader.readLine();
+			reader.readLine(); // Get rid of the first line of depechemood, as it contains no useful info
 
 			while ((lineMood = reader.readLine()) != null){
 
+				//TODO: make this parsing better
 				String word = lineMood.split("#")[0];
-				System.out.println("I just read the word: " + word);
-			}	
+				String type = lineMood.split("#")[1].split("	")[0];
+				Double afraid = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.AFRAID.ordinal()+1]);
+				Double amused = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.AMUSED.ordinal()+1]);
+				Double angry = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.ANGRY.ordinal()+1]);
+				Double annoyed = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.ANNOYED.ordinal()+1]);
+				Double dontCare = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.DONT_CARE.ordinal()+1]);
+				Double happy = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.HAPPY.ordinal()+1]);
+				Double inspired = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.INSPIRED.ordinal()+1]);
+				Double sad = Double.parseDouble(lineMood.split("#")[1].split("	")[Mood.SAD.ordinal()+1]);
+
+				Vector<Double> moods = new Vector<Double>();
+
+				moods.add(afraid);
+				moods.add(amused);
+				moods.add(angry);
+				moods.add(annoyed);
+				moods.add(dontCare);
+				moods.add(happy);
+				moods.add(inspired);
+				moods.add(sad);
+
+				if (DEBUG) {
+					System.out.println("I just read the word: " + word + " which is of type: " + type);
+					System.out.println(afraid);
+					System.out.println(amused);
+					System.out.println(angry);
+					System.out.println(annoyed);
+					System.out.println(dontCare);
+					System.out.println(happy);
+					System.out.println(inspired);
+					System.out.println(sad);
+				}
+
+
+				if (type.equals("n"))
+					nounToMoods.put(word, moods);
+				else if (type.equals("a"))
+					adjToMoods.put(word, moods);
+				else if (type.equals("v"))
+					verbToMoods.put(word, moods);
+				else
+					advToMoods.put(word, moods);
+			}
+
+
+
+		if (DEBUG) {
+			System.out.println("Let's try \"output\" noun: " + nounToMoods.get("output"));
+			System.out.println("Let's try \"output\" verb: " + verbToMoods.get("output"));
+
+
+			System.out.println("Let's try \"output\" noun at angry: " + nounToMoods.get("output").get(Mood.ANGRY.ordinal()));
+			System.out.println("Let's try \"output\" verb at amused: " + verbToMoods.get("output").get(Mood.AMUSED.ordinal()));
+		}
+
 
 
 		}catch(Exception e)
@@ -2236,6 +2297,7 @@ public class Sentilo {
 			System.out.println(e.getMessage());
 			System.out.println("^^^^ECCEZIONE^^^^");
 		}
+
 
 		System.out.println("SENS:"+this.sensitiveness);
 		
