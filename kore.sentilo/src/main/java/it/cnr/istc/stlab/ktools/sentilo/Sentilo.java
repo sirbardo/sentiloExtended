@@ -2280,16 +2280,15 @@ public class Sentilo {
 			}
 
 
-		if (DEBUG) {
-			System.out.println("Let's try \"output\" noun: " + nounToMoods.get("output"));
-			System.out.println("Let's try \"output\" verb: " + verbToMoods.get("output"));
+			if (DEBUG) {
+				System.out.println("Let's try \"output\" noun: " + nounToMoods.get("output"));
+				System.out.println("Let's try \"output\" verb: " + verbToMoods.get("output"));
 
 
-			System.out.println("Let's try \"output\" noun at angry: " + nounToMoods.get("output").get(Mood.ANGRY.ordinal()));
-			System.out.println("Let's try \"output\" verb at amused: " + verbToMoods.get("output").get(Mood.AMUSED.ordinal()));
-		}
-
-
+				System.out.println("Let's try \"output\" noun at angry: " + nounToMoods.get("output").get(Mood.ANGRY.ordinal()));
+				System.out.println("Let's try \"output\" verb at amused: " + verbToMoods.get("output").get(Mood.AMUSED.ordinal()));
+			}
+			
 
 		}catch(Exception e)
 		{			
