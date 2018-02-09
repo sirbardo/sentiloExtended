@@ -2221,6 +2221,7 @@ public class Sentilo {
 		this.nounToMoods = new HashMap();
 
 
+		//LAERTE
 		try{
 
 			InputStream depecheMood = Sentilo.class.getResourceAsStream("/DepecheMood_tfidf.txt");
@@ -2279,7 +2280,6 @@ public class Sentilo {
 			}
 
 
-
 		if (DEBUG) {
 			System.out.println("Let's try \"output\" noun: " + nounToMoods.get("output"));
 			System.out.println("Let's try \"output\" verb: " + verbToMoods.get("output"));
@@ -2297,6 +2297,7 @@ public class Sentilo {
 			System.out.println(e.getMessage());
 			System.out.println("^^^^ECCEZIONE^^^^");
 		}
+		//END LAERTE
 
 
 		System.out.println("SENS:"+this.sensitiveness);
