@@ -7,7 +7,9 @@ public class SentiHolder implements SentiElement {
     public org.apache.clerezza.rdf.core.Resource holder;
     public org.apache.clerezza.rdf.core.Resource holdertype;
     public org.apache.clerezza.rdf.core.Resource holder_quality;
-    public org.apache.clerezza.rdf.core.Resource holder_linking;
+	public org.apache.clerezza.rdf.core.Resource holder_linking;
+	public org.apache.clerezza.rdf.core.Resource holder_truth_value;
+
     
     public Vector getTypeVector() {
 	return null;
@@ -34,14 +36,14 @@ public class SentiHolder implements SentiElement {
     }
     
     public org.apache.clerezza.rdf.core.Resource getTruthValue() {
-	return null;
+		return holder_truth_value;
     }
     
     public org.apache.clerezza.rdf.core.Resource getAssociated() {
 	return null;
     }
     
-    public SentiHolder(org.apache.clerezza.rdf.core.Resource holder, org.apache.clerezza.rdf.core.Resource holdertype, org.apache.clerezza.rdf.core.Resource holder_quality, org.apache.clerezza.rdf.core.Resource holder_linking) {
+    public SentiHolder(org.apache.clerezza.rdf.core.Resource holder, org.apache.clerezza.rdf.core.Resource holdertype, org.apache.clerezza.rdf.core.Resource holder_quality, org.apache.clerezza.rdf.core.Resource holder_truth_value, org.apache.clerezza.rdf.core.Resource holder_linking) {
 	this.holder = holder;
 	this.holdertype = holdertype;
 	this.holder_quality = holder_quality;

@@ -288,20 +288,21 @@ public class Sentilo {
 						score = Util.getScoreFromDefaultStrategy(word_str, modelSenti, sentiwordnet, frequencyBasedWSD);
 					}
 					if (score != -999.0) {
+
+						String wordToFind = se.getQuality().toString().replace("<", "").replace(">", "");
+						wordToFind = wordToFind.substring(wordToFind.indexOf("#")+1, wordToFind.length());
+
+						if (!getWordTruthValue(wordToFind))
+							score = -score;
+
 						Triple newTriple = new TripleImpl(
 								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
-								new PlainLiteralImpl(String.format("%.3f", .6)));
-						Triple provaTripleLaerte = new TripleImpl(
-								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
-								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasProva"),
-								new PlainLiteralImpl(String.format("%.3f", .012)));
-						
+								new PlainLiteralImpl(String.format("%.3f", score)));
+
 						
 						if (DEBUG)
-							System.out.println("Laerte: " + se.getQuality().toString().replace("<", "").replace(">", ""));
 							System.out.println("----------SCORE HOLDER-------" + newTriple);
-						tripleSentilo.add(provaTripleLaerte);
 						tripleSentilo.add(newTriple);
 					}
 				}
@@ -318,6 +319,74 @@ public class Sentilo {
 			}
 		}
 	}
+
+
+/*
+	This method is used to swap the score when needed. It parses the existing triples to check if the situation where
+	the word is in has a "false" truth value, in which case it returns false.
+
+	Otherwise (even when, for example, it doesn't find the situation for some reason) it returns true, thus not changing
+	anything.
+
+	TODO: Make it more efficient by only going through the triple list once and using a data structure to store all
+	candidate situations
+
+	Laerte
+ */
+	private boolean getWordTruthValue (String wordToFind){
+
+		String situation = "";
+		String truth_value = "";
+
+		for (org.apache.clerezza.rdf.core.Triple triple : tripleCollection)
+		{
+			if (DEBUG)
+				System.out.println("___STARTDUMP___");
+
+			String subject = triple.getSubject().toString();
+			subject = subject.substring(subject.indexOf("#")+1, subject.length()-1);
+
+			String predicate = triple.getPredicate().toString();
+			predicate = predicate.substring(predicate.indexOf("#")+1, predicate.length()-1);
+
+			String object = triple.getObject().toString();
+			object = object.substring(object.indexOf("#")+1, object.length()-1);
+
+
+			if (object.equals(wordToFind) && predicate.equals("involves"))
+				situation = subject;
+
+			if (DEBUG) {
+				System.out.println(subject);
+				System.out.println(predicate);
+				System.out.println(object);
+				System.out.println("____ENDDUMP___");
+			}
+		}
+
+
+		for (org.apache.clerezza.rdf.core.Triple triple : tripleCollection)
+		{
+			String subject = triple.getSubject().toString();
+			subject = subject.substring(subject.indexOf("#")+1, subject.length()-1);
+
+			String predicate = triple.getPredicate().toString();
+			predicate = predicate.substring(predicate.indexOf("#")+1, predicate.length()-1);
+
+			String object = triple.getObject().toString();
+			object = object.substring(object.indexOf("#")+1, object.length()-1);
+
+			if (subject.equals(situation) && predicate.equals("hasTruthValue"))
+				truth_value = object;
+		}
+
+
+		if (truth_value.equals("False"))
+			return false;
+		else
+			return true;
+	}
+
 
 	/*
 	 * run the query sparql and populate the vectors events, holders, mtopics,
@@ -362,8 +431,10 @@ public class Sentilo {
 						querySolution.get("holder_quality"));
 				org.apache.clerezza.rdf.core.Resource holderlinking = convertFromJenaResource(
 						querySolution.get("holderlinking"));
+				org.apache.clerezza.rdf.core.Resource holder_truth_value = convertFromJenaResource(
+						querySolution.get("holder_truth_value"));
 
-				SentiHolder sent = new SentiHolder(holder, holderType, holderQuality, holderlinking);
+				SentiHolder sent = new SentiHolder(holder, holderType, holderQuality, holder_truth_value, holderlinking);
 				if (holders.contains(sent) == false) {
 					holders.add(sent);
 				}
@@ -548,8 +619,10 @@ public class Sentilo {
 								querySolution.get("holder_quality"));
 						org.apache.clerezza.rdf.core.Resource holderlinking = convertFromJenaResource(
 								querySolution.get("holderlinking"));
+						org.apache.clerezza.rdf.core.Resource holder_truth_value = convertFromJenaResource(
+								querySolution.get("holder_truth_value"));
 
-						SentiHolder sent = new SentiHolder(holder, holderType, holderQuality, holderlinking);
+						SentiHolder sent = new SentiHolder(holder, holderType, holderQuality, holder_truth_value, holderlinking);
 						if (holders.contains(sent) == false) {
 							holders.add(sent);
 						}
@@ -1260,7 +1333,7 @@ public class Sentilo {
 					Triple triple = new TripleImpl(
 							new UriRef(sol.getResource("verb_is").getURI().replace("<", "").replace(">", "")),
 							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
-							new PlainLiteralImpl(String.format("%.3f", .7)));
+							new PlainLiteralImpl(String.format("%.3f", score)));
 					tripleSentilo.add(triple);
 					if (DEBUG)
 						System.out.println("----------SCORE  VERB-------" + triple);
@@ -1345,7 +1418,7 @@ public class Sentilo {
 						triple = new TripleImpl(
 								new UriRef(sol.getResource("topic").getURI().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
-								new PlainLiteralImpl(String.format("%.3f", .8)));
+								new PlainLiteralImpl(String.format("%.3f", avg)));
 						tripleSentilo.add(triple);
 						// add score triple
 					}
@@ -1394,7 +1467,7 @@ public class Sentilo {
 						Triple triple = new TripleImpl(
 								new UriRef(sol.getResource("node1").getURI().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
-								new PlainLiteralImpl(String.format("%.3f", 0.1)));
+								new PlainLiteralImpl(String.format("%.3f", avg)));
 						tripleSentilo.add(triple);
 						// add score triple
 					}
@@ -2093,7 +2166,7 @@ public class Sentilo {
 					avg_pos += (Double) pos.get(i);
 				}
 				avg_pos /= pos.size();
-				String avg_pos_str = String.format("%.3f", .2);
+				String avg_pos_str = String.format("%.3f", avg_pos);
 				triple = new TripleImpl(new UriRef(ts.getTopic().replace("<", "").replace(">", "")),
 						new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasPosScore"),
 						new PlainLiteralImpl(avg_pos_str));
@@ -2107,7 +2180,7 @@ public class Sentilo {
 					avg_neg += (Double) neg.get(i);
 				}
 				avg_neg /= neg.size();
-				String avg_neg_str = String.format("%.3f", .3);
+				String avg_neg_str = String.format("%.3f", avg_neg);
 				triple = new TripleImpl(new UriRef(ts.getTopic().replace("<", "").replace(">", "")),
 						new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasNegScore"),
 						new PlainLiteralImpl(avg_neg_str));
@@ -2117,7 +2190,7 @@ public class Sentilo {
 
 			if (pos.size() > 0 || neg.size() > 0 || neutral > 0) {
 				avg_all /= (pos.size() + neg.size() + neutral);
-				String avg_str = String.format("%.3f", .4);
+				String avg_str = String.format("%.3f", avg_all);
 				triple = new TripleImpl(new UriRef(ts.getTopic().replace("<", "").replace(">", "")),
 						new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgScore"),
 						new PlainLiteralImpl(avg_str));
@@ -2180,7 +2253,7 @@ public class Sentilo {
 			double score = ((Double) holder_entry.getValue()).doubleValue();
 			int count = ((Integer) map_holder_count.get(holder)).intValue();
 			score /= count;
-			String avg_str = String.format("%.3f", .5);
+			String avg_str = String.format("%.3f", score);
 			triple = null;
 			if (score > 0)
 				triple = new TripleImpl(new UriRef(holder),
@@ -2288,7 +2361,7 @@ public class Sentilo {
 				System.out.println("Let's try \"output\" noun at angry: " + nounToMoods.get("output").get(Mood.ANGRY.ordinal()));
 				System.out.println("Let's try \"output\" verb at amused: " + verbToMoods.get("output").get(Mood.AMUSED.ordinal()));
 			}
-			
+
 
 		}catch(Exception e)
 		{			

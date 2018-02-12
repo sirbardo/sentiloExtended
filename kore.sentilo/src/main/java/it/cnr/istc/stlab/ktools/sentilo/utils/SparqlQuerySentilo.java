@@ -143,7 +143,7 @@ public class SparqlQuerySentilo {
     	    " PREFIX fred: <http://www.ontologydesignpatterns.org/ont/fred/domain.owl#> "+
     	    " SELECT DISTINCT "+
     	    " ?event ?eventype ?event_quality ?event_truth_value ?event_mod ?eventlinking"+
-    	    " ?holder ?holdertype ?holder_quality ?holderlinking"+
+    	    " ?holder ?holdertype ?holder_quality ?holder_truth_value ?holderlinking"+
     	    " ?mtopic ?mtopic_quality ?mtopic_truth_value ?mtopic_mod ?mtopiclinking ?eventmtopictype ?mtopicsit ?nomeventmtopictype ?entitymtopictype"+
     	    //" ?subtopic ?subtopic1 ?subtopictype ?subtopic1type ?subtopic_quality ?subtopic1_quality ?s_associated ?s1_associated ?subtopiclinking ?subtopic1linking"+
     	    " ?subtopic ?infratopic ?nanotopic ?subtopictype ?infratopictype ?nanotopictype ?subtopic_quality ?infratopic_quality ?nanotopic_quality ?m_associated ?s_associated ?s1_associated ?subtopiclinking ?infratopiclinking ?nanotopiclinking ?subtopic_mod ?infratopic_mod ?nanotopic_mod ?subtopic_truth_value ?infratopic_truth_value ?nanotopic_truth_value "+
@@ -163,6 +163,7 @@ public class SparqlQuerySentilo {
     	    " UNION {?event vnrole:Actor2 ?holder} "+
     	    " UNION {?event vnrole:Agent ?holder} "+
     	    " UNION {?event fred:inOpinionOf ?holder} "+
+			" UNION {?event boxer:hasTruthValue ?holder_truth_value}"+
     	    " UNION {?event boxer:agent ?holder}} "+
     	    " UNION  "+
     	    " {{?event vnrole:Theme ?holder}  "+
