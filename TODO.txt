@@ -1,0 +1,1 @@
+Do the TODOs in Sentilo.java and fix the same word, different sentences problem
