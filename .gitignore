@@ -1,0 +1,14 @@
+
+.DS_Store
+.idea/codeStyles/codeStyleConfig.xml
+.idea/misc.xml
+kore.sentilo.index/.classpath
+kore.sentilo.index/.project
+kore.sentilo.index/.settings/org.eclipse.jdt.core.prefs
+kore.sentilo.index/pom.xml
+kore.sentilo.index/target/classes/it/cnr/istc/stlab/ktools/sentilo/api/TopicIndex.class
+*.class
+*.jar
+.*
+*.properties
+!/.gitignore
