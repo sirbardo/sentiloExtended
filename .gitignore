@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .DS_Store
 .idea/codeStyles/codeStyleConfig.xml
@@ -16,3 +17,19 @@ kore.sentilo.index/.classpath
 kore.sentilo.index/.project
 
 kore.sentilo.index/.classpath
+=======
+
+.DS_Store
+.idea/codeStyles/codeStyleConfig.xml
+.idea/misc.xml
+kore.sentilo.index/.classpath
+kore.sentilo.index/.project
+kore.sentilo.index/.settings/org.eclipse.jdt.core.prefs
+kore.sentilo.index/pom.xml
+kore.sentilo.index/target/classes/it/cnr/istc/stlab/ktools/sentilo/api/TopicIndex.class
+*.class
+*.jar
+.*
+*.properties
+!/.gitignore
+>>>>>>> e3e92f1741f4c1e6b6cc65209ff1c3db299f221d

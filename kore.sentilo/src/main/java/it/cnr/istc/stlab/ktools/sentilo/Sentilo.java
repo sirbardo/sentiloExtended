@@ -299,11 +299,14 @@ public class Sentilo {
 								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 								new PlainLiteralImpl(String.format("%.3f", score)));
+						Triple moodTriple = getMoodTriple(wordToFind, se);
 
-						
 						if (DEBUG)
 							System.out.println("----------SCORE HOLDER-------" + newTriple);
+
 						tripleSentilo.add(newTriple);
+						tripleSentilo.add(moodTriple);
+
 					}
 				}
 				Triple newTriple = new TripleImpl(
@@ -1291,6 +1294,76 @@ public class Sentilo {
 		}
 	}
 
+
+	//Get the triple hasMood
+
+	private Triple getMoodTriple(String resource, String word, QuerySolution sol){
+
+			Vector<Double> moods = null;
+
+			word = word.toLowerCase();
+		
+			if(resource.equals("verb_is"))
+				moods = verbToMoods.get(word);
+			if(resource.equals("topic"))
+				moods = nounToMoods.get(word);
+
+			System.out.println("Resource: "+resource+" Word: "+word);
+
+
+			Double afraid = moods.get(Mood.AFRAID.ordinal());
+			Double amused = moods.get(Mood.AMUSED.ordinal());
+			Double angry = moods.get(Mood.ANGRY.ordinal());
+			Double annoyed = moods.get(Mood.ANNOYED.ordinal());
+			Double dontCare = moods.get(Mood.DONT_CARE.ordinal());
+			Double happy = moods.get(Mood.HAPPY.ordinal());
+			Double inspired = moods.get(Mood.INSPIRED.ordinal());
+			Double sad = moods.get(Mood.SAD.ordinal());
+
+			Triple triple = new TripleImpl(
+							new UriRef(sol.getResource(resource).getURI().replace("<", "").replace(">", "")),
+							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasMood"),
+							new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
+							afraid, amused, angry, annoyed, dontCare, happy, inspired, sad)));
+
+			return triple;
+
+	}
+
+	private Triple getMoodTriple(String word, SentiElement se){
+
+		Vector<Double> moods = null;
+		word = word.toLowerCase();
+
+		moods = nounToMoods.get(word);
+		if(moods == null)
+			moods = adjToMoods.get(word);
+		if(moods == null)
+			moods = advToMoods.get(word);
+		if(moods == null)
+			moods = nounToMoods.get(word);
+		System.out.println("Word: "+word);
+
+
+		Double afraid = moods.get(Mood.AFRAID.ordinal());
+		Double amused = moods.get(Mood.AMUSED.ordinal());
+		Double angry = moods.get(Mood.ANGRY.ordinal());
+		Double annoyed = moods.get(Mood.ANNOYED.ordinal());
+		Double dontCare = moods.get(Mood.DONT_CARE.ordinal());
+		Double happy = moods.get(Mood.HAPPY.ordinal());
+		Double inspired = moods.get(Mood.INSPIRED.ordinal());
+		Double sad = moods.get(Mood.SAD.ordinal());
+
+		Triple triple = new TripleImpl(
+				new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasMood"),
+				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
+						afraid, amused, angry, annoyed, dontCare, happy, inspired, sad)));
+
+		return triple;
+
+	}
+
 	/* set a score to each verb being subclass of dul:Event and trigger */
 	// REMEMBER TO ADD VERBS AGGETTIVANTI NON TRIGGER
 	public void setScoreToEachVerb() {
@@ -1333,7 +1406,9 @@ public class Sentilo {
 							new UriRef(sol.getResource("verb_is").getURI().replace("<", "").replace(">", "")),
 							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 							new PlainLiteralImpl(String.format("%.3f", score)));
+					Triple moodTriple = getMoodTriple("verb_is", verb, sol);
 					tripleSentilo.add(triple);
+					tripleSentilo.add(moodTriple);
 					if (DEBUG)
 						System.out.println("----------SCORE  VERB-------" + triple);
 				}
@@ -1419,6 +1494,7 @@ public class Sentilo {
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 								new PlainLiteralImpl(String.format("%.3f", avg)));
 						tripleSentilo.add(triple);
+
 						// add score triple
 					}
 					// if found score in camelCase then average and then create
