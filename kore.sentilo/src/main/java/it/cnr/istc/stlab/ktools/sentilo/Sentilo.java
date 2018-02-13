@@ -328,8 +328,7 @@ public class Sentilo {
 	Otherwise (even when, for example, it doesn't find the situation for some reason) it returns true, thus not changing
 	anything.
 
-	TODO: Make it more efficient by only going through the triple list once and using a data structure to store all
-	candidate situations
+	TODO: Make it more efficient by only going through the triple list once and using a data structure to store all candidate situations
 
 	Laerte
  */
