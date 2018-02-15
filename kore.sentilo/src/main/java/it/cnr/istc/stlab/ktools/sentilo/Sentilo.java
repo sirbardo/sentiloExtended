@@ -299,7 +299,7 @@ public class Sentilo {
 								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 								new PlainLiteralImpl(String.format("%.3f", score)));
-						Triple moodTriple = getMoodTriple(wordToFind, se);
+						Triple moodTriple = getMoodTriple("not_verb",wordToFind, se.getQuality().toString().replace("<", "").replace(">", ""));
 
 						if (DEBUG)
 							System.out.println("----------SCORE HOLDER-------" + newTriple);
@@ -1295,54 +1295,27 @@ public class Sentilo {
 	}
 
 
-	//Get the triple hasMood
+//LUCA
 
-	private Triple getMoodTriple(String resource, String word, QuerySolution sol){
+	//Returns the triple hasMood
 
-			Vector<Double> moods = null;
-
-			word = word.toLowerCase();
-		
-			if(resource.equals("verb_is"))
-				moods = verbToMoods.get(word);
-			if(resource.equals("topic"))
-				moods = nounToMoods.get(word);
-
-			System.out.println("Resource: "+resource+" Word: "+word);
-
-
-			Double afraid = moods.get(Mood.AFRAID.ordinal());
-			Double amused = moods.get(Mood.AMUSED.ordinal());
-			Double angry = moods.get(Mood.ANGRY.ordinal());
-			Double annoyed = moods.get(Mood.ANNOYED.ordinal());
-			Double dontCare = moods.get(Mood.DONT_CARE.ordinal());
-			Double happy = moods.get(Mood.HAPPY.ordinal());
-			Double inspired = moods.get(Mood.INSPIRED.ordinal());
-			Double sad = moods.get(Mood.SAD.ordinal());
-
-			Triple triple = new TripleImpl(
-							new UriRef(sol.getResource(resource).getURI().replace("<", "").replace(">", "")),
-							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasMood"),
-							new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
-							afraid, amused, angry, annoyed, dontCare, happy, inspired, sad)));
-
-			return triple;
-
-	}
-
-	private Triple getMoodTriple(String word, SentiElement se){
+	private Triple getMoodTriple(String resource, String word, String uriStr){
 
 		Vector<Double> moods = null;
+
 		word = word.toLowerCase();
 
-		moods = nounToMoods.get(word);
-		if(moods == null)
-			moods = adjToMoods.get(word);
-		if(moods == null)
-			moods = advToMoods.get(word);
-		if(moods == null)
+		if(resource.equals("verb")) //Check if the resource is a verb
+			moods = verbToMoods.get(word);
+		else{
 			moods = nounToMoods.get(word);
-		System.out.println("Word: "+word);
+			if (moods == null)
+				moods = adjToMoods.get(word);
+			if (moods == null)
+				moods = advToMoods.get(word);
+		}
+
+		System.out.println("Resource: "+resource+" Word: "+word);
 
 
 		Double afraid = moods.get(Mood.AFRAID.ordinal());
@@ -1355,7 +1328,7 @@ public class Sentilo {
 		Double sad = moods.get(Mood.SAD.ordinal());
 
 		Triple triple = new TripleImpl(
-				new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
+				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasMood"),
 				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
 						afraid, amused, angry, annoyed, dontCare, happy, inspired, sad)));
@@ -1363,6 +1336,53 @@ public class Sentilo {
 		return triple;
 
 	}
+
+	//Compute the avgMood triple
+	private Triple getAvgMoodTriple(String uriStr){
+
+		Double count=0.0;
+		Double afraid=0.0;
+		Double amused=0.0;
+		Double angry=0.0;
+		Double annoyed=0.0;
+		Double dontCare=0.0;
+		Double happy=0.0;
+		Double inspired=0.0;
+		Double sad=0.0;
+
+		for(Triple t : tripleSentilo){
+
+			String[] predicates = t.getPredicate().toString().split("#|<|>");
+
+			if(predicates[predicates.length-1].equals("hasMood")){
+
+				String obj = t.getObject().toString();
+				String[] splitted = obj.split("\\,");
+				afraid += Double.parseDouble(splitted[0].split(" ")[1]);
+				amused += Double.parseDouble(splitted[1].split(" ")[2]);
+				angry += Double.parseDouble(splitted[2].split(" ")[2]);
+				annoyed += Double.parseDouble(splitted[3].split(" ")[2]);
+				dontCare += Double.parseDouble(splitted[4].split(" ")[2]);
+				happy += Double.parseDouble(splitted[5].split(" ")[2]);
+				inspired += Double.parseDouble(splitted[6].split(" ")[2]);
+				sad += Double.parseDouble(splitted[7].split(" ")[2].replaceFirst("\"",""));
+
+				count++;
+
+			}
+		}
+
+		Triple triple = new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgMood"),
+				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
+						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count))));
+
+		return triple;
+
+	}
+
+	//END LUCA
 
 	/* set a score to each verb being subclass of dul:Event and trigger */
 	// REMEMBER TO ADD VERBS AGGETTIVANTI NON TRIGGER
@@ -1406,7 +1426,7 @@ public class Sentilo {
 							new UriRef(sol.getResource("verb_is").getURI().replace("<", "").replace(">", "")),
 							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 							new PlainLiteralImpl(String.format("%.3f", score)));
-					Triple moodTriple = getMoodTriple("verb_is", verb, sol);
+					Triple moodTriple = getMoodTriple("verb", verb, sol.getResource("verb_is").getURI().replace("<", "").replace(">", ""));
 					tripleSentilo.add(triple);
 					tripleSentilo.add(moodTriple);
 					if (DEBUG)
@@ -2270,7 +2290,11 @@ public class Sentilo {
 						new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgScore"),
 						new PlainLiteralImpl(avg_str));
 
+				//Compute the Average mood triple
+				Triple avgMoodtriple = getAvgMoodTriple(ts.getTopic().replace("<", "").replace(">", ""));
+				tripleSentilo.add(avgMoodtriple);
 				tripleSentilo.add(triple);
+
 			} else
 				avg_all = -999;
 
@@ -2342,7 +2366,11 @@ public class Sentilo {
 			triple = new TripleImpl(new UriRef(holder),
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgScore"),
 					new PlainLiteralImpl(avg_str));
+			//Compute the Average mood triple
+			Triple avgMoodtriple = getAvgMoodTriple(ts.getTopic().replace("<", "").replace(">", ""));
+			tripleSentilo.add(avgMoodtriple);
 			tripleSentilo.add(triple);
+
 		}
 	}
 
