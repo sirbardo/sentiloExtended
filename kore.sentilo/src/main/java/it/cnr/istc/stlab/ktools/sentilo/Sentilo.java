@@ -299,13 +299,15 @@ public class Sentilo {
 								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 								new PlainLiteralImpl(String.format("%.3f", score)));
-						Triple moodTriple = getMoodTriple("not_verb",wordToFind, se.getQuality().toString().replace("<", "").replace(">", ""));
+						ArrayList<Triple> moodTriples = getMoodTriples("not_verb",wordToFind, se.getQuality().toString().replace("<", "").replace(">", ""));
 
 						if (DEBUG)
 							System.out.println("----------SCORE HOLDER-------" + newTriple);
 
 						tripleSentilo.add(newTriple);
-						tripleSentilo.add(moodTriple);
+						for(Triple t : moodTriples) {
+							tripleSentilo.add(t);
+						}
 
 					}
 				}
@@ -1299,7 +1301,7 @@ public class Sentilo {
 
 	//Returns the triple hasMood
 
-	private Triple getMoodTriple(String resource, String word, String uriStr){
+	private ArrayList<Triple> getMoodTriples(String resource, String word, String uriStr){
 
 		Vector<Double> moods = null;
 
@@ -1327,18 +1329,48 @@ public class Sentilo {
 		Double inspired = moods.get(Mood.INSPIRED.ordinal());
 		Double sad = moods.get(Mood.SAD.ordinal());
 
-		Triple triple = new TripleImpl(
-				new UriRef(uriStr),
-				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasMood"),
-				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
-						afraid, amused, angry, annoyed, dontCare, happy, inspired, sad)));
+		ArrayList<Triple> triples = new ArrayList<Triple>();
 
-		return triple;
+
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAfraidValue"),
+				new PlainLiteralImpl(String.format("%.3f", afraid))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAmusedValue"),
+				new PlainLiteralImpl(String.format("%.3f", amused))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAngryValue"),
+				new PlainLiteralImpl(String.format("%.3f", angry))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAnnoyedValue"),
+				new PlainLiteralImpl(String.format("%.3f", annoyed))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDontCareValue"),
+				new PlainLiteralImpl(String.format("%.3f", dontCare))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasHappyValue"),
+				new PlainLiteralImpl(String.format("%.3f", happy))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasInspiredValue"),
+				new PlainLiteralImpl(String.format("%.3f", inspired))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasSadValue"),
+				new PlainLiteralImpl(String.format("%.3f", sad))));
+
+		return triples;
 
 	}
 
 	//Compute the avgMood triple
-	private Triple getAvgMoodTriple(String uriStr){
+	private ArrayList<Triple> getAvgMoodTriples(String uriStr){
 
 		Double count=0.0;
 		Double afraid=0.0;
@@ -1354,31 +1386,73 @@ public class Sentilo {
 
 			String[] predicates = t.getPredicate().toString().split("#|<|>");
 
-			if(predicates[predicates.length-1].equals("hasMood")){
+			if(predicates[predicates.length-1].equals("hasAfraidValue") || predicates[predicates.length-1].equals("hasAmusedValue") ||
+					predicates[predicates.length-1].equals("hasAngryValue") || predicates[predicates.length-1].equals("hasAnnoyedValue") ||
+					predicates[predicates.length-1].equals("hasDontCareValue") || predicates[predicates.length-1].equals("hasHappyValue") ||
+					predicates[predicates.length-1].equals("hasInspiredValue") || predicates[predicates.length-1].equals("hasSadValue")){
 
-				String obj = t.getObject().toString();
-				String[] splitted = obj.split("\\,");
-				afraid += Double.parseDouble(splitted[0].split(" ")[1]);
-				amused += Double.parseDouble(splitted[1].split(" ")[2]);
-				angry += Double.parseDouble(splitted[2].split(" ")[2]);
-				annoyed += Double.parseDouble(splitted[3].split(" ")[2]);
-				dontCare += Double.parseDouble(splitted[4].split(" ")[2]);
-				happy += Double.parseDouble(splitted[5].split(" ")[2]);
-				inspired += Double.parseDouble(splitted[6].split(" ")[2]);
-				sad += Double.parseDouble(splitted[7].split(" ")[2].replaceFirst("\"",""));
+				String obj = t.getObject().toString().replace("\"", "");
+				System.out.println(obj);
+
+				if(predicates[predicates.length-1].equals("hasAfraidValue"))
+					afraid += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasAmusedValue"))
+					amused += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasAngryValue"))
+					angry += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasAnnoyedValue"))
+					annoyed += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasDontCareValue"))
+					dontCare += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasHappyValue"))
+					happy += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasInspiredValue"))
+					inspired += Double.parseDouble(obj);
+				if(predicates[predicates.length-1].equals("hasSadValue"))
+					sad += Double.parseDouble(obj);
 
 				count++;
-
 			}
 		}
 
-		Triple triple = new TripleImpl(
-				new UriRef(uriStr),
-				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgMood"),
-				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
-						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count))));
+		count /=8;
+		ArrayList<Triple> triples = new ArrayList<Triple>();
 
-		return triple;
+
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAfraid"),
+				new PlainLiteralImpl(String.format("%.3f", afraid/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAmused"),
+				new PlainLiteralImpl(String.format("%.3f", amused/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAngry"),
+				new PlainLiteralImpl(String.format("%.3f", angry/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAnnoyed"),
+				new PlainLiteralImpl(String.format("%.3f", annoyed/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgDontCare"),
+				new PlainLiteralImpl(String.format("%.3f", dontCare/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgHappy"),
+				new PlainLiteralImpl(String.format("%.3f", happy/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgInspired"),
+				new PlainLiteralImpl(String.format("%.3f", inspired/count))));
+		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgSad"),
+				new PlainLiteralImpl(String.format("%.3f", sad/count))));
+
+		return triples;
 
 	}
 
@@ -1426,9 +1500,11 @@ public class Sentilo {
 							new UriRef(sol.getResource("verb_is").getURI().replace("<", "").replace(">", "")),
 							new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 							new PlainLiteralImpl(String.format("%.3f", score)));
-					Triple moodTriple = getMoodTriple("verb", verb, sol.getResource("verb_is").getURI().replace("<", "").replace(">", ""));
+					ArrayList<Triple> moodTriples = getMoodTriples("verb", verb, sol.getResource("verb_is").getURI().replace("<", "").replace(">", ""));
 					tripleSentilo.add(triple);
-					tripleSentilo.add(moodTriple);
+					for(Triple t : moodTriples) {
+						tripleSentilo.add(t);
+					}
 					if (DEBUG)
 						System.out.println("----------SCORE  VERB-------" + triple);
 				}
@@ -2291,8 +2367,11 @@ public class Sentilo {
 						new PlainLiteralImpl(avg_str));
 
 				//Compute the Average mood triple
-				Triple avgMoodtriple = getAvgMoodTriple(ts.getTopic().replace("<", "").replace(">", ""));
-				tripleSentilo.add(avgMoodtriple);
+				ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(ts.getTopic().replace("<", "").replace(">", ""));
+
+				for(Triple t : avgMoodtriples){
+					tripleSentilo.add(t);
+				}
 				tripleSentilo.add(triple);
 
 			} else
@@ -2367,8 +2446,10 @@ public class Sentilo {
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgScore"),
 					new PlainLiteralImpl(avg_str));
 			//Compute the Average mood triple
-			Triple avgMoodtriple = getAvgMoodTriple(ts.getTopic().replace("<", "").replace(">", ""));
-			tripleSentilo.add(avgMoodtriple);
+			ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(holder);
+			for(Triple t : avgMoodtriples){
+				tripleSentilo.add(t);
+			}
 			tripleSentilo.add(triple);
 
 		}
