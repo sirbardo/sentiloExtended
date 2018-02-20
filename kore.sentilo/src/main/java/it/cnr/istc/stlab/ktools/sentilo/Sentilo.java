@@ -1313,15 +1313,20 @@ public class Sentilo {
 
 		word = word.toLowerCase();
 
+		System.out.println("Resource: "+resource+" Word: "+word);
+
 		if(resource.equals("verb")) //Check if the resource is a verb
 			moods = verbToMoods.get(word);
-		else if(resource.equals("quality"))
+		else if(resource.equals("quality")) {
 			moods = adjToMoods.get(word);
-		else{
-			moods = nounToMoods.get(word);
+
 			if (moods == null)
 				moods = advToMoods.get(word);
+
+			if (moods == null)
+				moods = nounToMoods.get(word);
 		}
+		
 
 		System.out.println("Resource: "+resource+" Word: "+word);
 
