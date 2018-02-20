@@ -295,19 +295,25 @@ public class Sentilo {
 						if (!getWordTruthValue(wordToFind))
 							score = -score;
 
+						else{
+
+							ArrayList<Triple> moodTriples = getMoodTriples("quality", wordToFind, se.getQuality().toString().replace("<", "").replace(">", ""));
+							for(Triple t : moodTriples) {
+								tripleSentilo.add(t);
+							}
+
+						}
+
 						Triple newTriple = new TripleImpl(
 								new UriRef(se.getQuality().toString().replace("<", "").replace(">", "")),
 								new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasScore"),
 								new PlainLiteralImpl(String.format("%.3f", score)));
-						ArrayList<Triple> moodTriples = getMoodTriples("not_verb",wordToFind, se.getQuality().toString().replace("<", "").replace(">", ""));
 
 						if (DEBUG)
 							System.out.println("----------SCORE HOLDER-------" + newTriple);
 
 						tripleSentilo.add(newTriple);
-						for(Triple t : moodTriples) {
-							tripleSentilo.add(t);
-						}
+
 
 					}
 				}
@@ -1309,10 +1315,10 @@ public class Sentilo {
 
 		if(resource.equals("verb")) //Check if the resource is a verb
 			moods = verbToMoods.get(word);
+		else if(resource.equals("quality"))
+			moods = adjToMoods.get(word);
 		else{
 			moods = nounToMoods.get(word);
-			if (moods == null)
-				moods = adjToMoods.get(word);
 			if (moods == null)
 				moods = advToMoods.get(word);
 		}
@@ -1372,7 +1378,7 @@ public class Sentilo {
 	//Compute the avgMood triple
 	private ArrayList<Triple> getAvgMoodTriples(String uriStr){
 
-		Double count=0.0;
+		Integer count=0;
 		Double afraid=0.0;
 		Double amused=0.0;
 		Double angry=0.0;
@@ -1392,7 +1398,6 @@ public class Sentilo {
 					predicates[predicates.length-1].equals("hasInspiredValue") || predicates[predicates.length-1].equals("hasSadValue")){
 
 				String obj = t.getObject().toString().replace("\"", "");
-				System.out.println(obj);
 
 				if(predicates[predicates.length-1].equals("hasAfraidValue"))
 					afraid += Double.parseDouble(obj);
@@ -2370,7 +2375,7 @@ public class Sentilo {
 				ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(ts.getTopic().replace("<", "").replace(">", ""));
 
 				for(Triple t : avgMoodtriples){
-					tripleSentilo.add(t);
+					//tripleSentilo.add(t);
 				}
 				tripleSentilo.add(triple);
 
@@ -2448,7 +2453,7 @@ public class Sentilo {
 			//Compute the Average mood triple
 			ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(holder);
 			for(Triple t : avgMoodtriples){
-				tripleSentilo.add(t);
+				//tripleSentilo.add(t);
 			}
 			tripleSentilo.add(triple);
 
