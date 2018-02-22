@@ -602,6 +602,11 @@ public class SentiloResource extends BaseTipaloResource {
                         }
 
                 }
+                if(predicateName.contains("hasDeepSentiment"))
+                    colorliteral = " bgcolor='#BA55D3'";
+
+				if(predicateName.contains("hasAvgMood"))
+				    colorliteral = " bgcolor='#00C78C'";
 			}
 
 			if(objectString.contains("opinion_trigger_context")==true || objectString.contains("opinionated_context")==true) {

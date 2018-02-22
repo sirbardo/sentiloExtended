@@ -1551,7 +1551,7 @@ public class Sentilo {
 				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
 						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count)))));
 
-
+		//Uncomment this block to show a triple for each mood
 		/*triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAfraid"),
