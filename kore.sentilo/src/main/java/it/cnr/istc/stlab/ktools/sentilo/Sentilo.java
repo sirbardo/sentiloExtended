@@ -1428,8 +1428,14 @@ public class Sentilo {
 		count /=8;
 		ArrayList<Triple> triples = new ArrayList<Triple>();
 
-
 		triples.add(new TripleImpl(
+				new UriRef(uriStr),
+				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgMood"),
+				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
+						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count)))));
+
+
+		/*triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAfraid"),
 				new PlainLiteralImpl(String.format("%.3f", afraid/count))));
@@ -1460,7 +1466,7 @@ public class Sentilo {
 		triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgSad"),
-				new PlainLiteralImpl(String.format("%.3f", sad/count))));
+				new PlainLiteralImpl(String.format("%.3f", sad/count))));*/
 
 		return triples;
 
@@ -2380,7 +2386,7 @@ public class Sentilo {
 				ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(ts.getTopic().replace("<", "").replace(">", ""));
 
 				for(Triple t : avgMoodtriples){
-					//tripleSentilo.add(t);
+					tripleSentilo.add(t);
 				}
 				tripleSentilo.add(triple);
 
@@ -2458,7 +2464,7 @@ public class Sentilo {
 			//Compute the Average mood triple
 			ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(holder);
 			for(Triple t : avgMoodtriples){
-				//tripleSentilo.add(t);
+				tripleSentilo.add(t);
 			}
 			tripleSentilo.add(triple);
 

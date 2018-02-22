@@ -99,7 +99,7 @@ public class SentiloResource extends BaseTipaloResource {
      *            {To get the context where the REST service is running.}
      */
     public SentiloResource(@Context ServletContext servletContext) {
-        
+
         this.serializer = ContextHelper.getServiceFromContext(Serializer.class, servletContext);
         BundleContext bundleContext = ContextHelper.getBundleContext(servletContext);
         
@@ -114,7 +114,7 @@ public class SentiloResource extends BaseTipaloResource {
         }
         this.graphViz = ContextHelper.getServiceFromContext(GraphViz.class, servletContext);
         this.tcManager = ContextHelper.getServiceFromContext(TcManager.class, servletContext);
-        
+
     }
     /*
     @GET
@@ -159,7 +159,7 @@ public class SentiloResource extends BaseTipaloResource {
                      "application/json+jit"})
     public Response getRDF(@QueryParam("text") String text, @QueryParam("format") String format, @QueryParam("prefix") String prefix, @QueryParam("namespace") String namespace, @QueryParam("scores") boolean showOnlyScores, @QueryParam("sentiwordnet") boolean sentiwordnet, @Context HttpHeaders headers) {
     
-        
+
         if(namespace == null){
             namespace = "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#";
         }
@@ -578,6 +578,30 @@ public class SentiloResource extends BaseTipaloResource {
 						colorliteral = " bgcolor='#00FF00;' ";
 					}
 				}
+				//Mood triples color
+				if(predicateName.contains("Afraid") || predicateName.contains("Amused") || predicateName.contains("Angry") || predicateName.contains("Annoyed") ||
+                        predicateName.contains("DontCare") || predicateName.contains("Happy") || predicateName.contains("Inspired") || predicateName.contains("Sad")){
+
+				        Double moodValue = Double.parseDouble(objectString);
+                        source += "\"" + objectString + "\" [];\n ";
+                        //Set a shade of orange based on the mood value
+				        if (moodValue < 0.2){
+				            colorliteral = " bgcolor='#FEC34D;'";
+                        }
+                        else if (moodValue < 0.4){
+                            colorliteral = " bgcolor='#FF9F00;'";
+                        }
+                        else if (moodValue < 0.6){
+                            colorliteral = " bgcolor='#FF8106;'";
+                        }
+                        else if (moodValue < 0.8){
+                            colorliteral = " bgcolor='#FF5C00;'";
+                        }
+                        else if (moodValue < 1.0){
+                            colorliteral = " bgcolor='#FF4023;'";
+                        }
+
+                }
 			}
 
 			if(objectString.contains("opinion_trigger_context")==true || objectString.contains("opinionated_context")==true) {
