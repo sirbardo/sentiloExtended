@@ -578,7 +578,7 @@ public class SentiloResource extends BaseTipaloResource {
 						colorliteral = " bgcolor='#00FF00;' ";
 					}
 				}
-				//Mood triples color
+				//Mood triples color //Luca
 				if(predicateName.contains("Afraid") || predicateName.contains("Amused") || predicateName.contains("Angry") || predicateName.contains("Annoyed") ||
                         predicateName.contains("DontCare") || predicateName.contains("Happy") || predicateName.contains("Inspired") || predicateName.contains("Sad")){
 

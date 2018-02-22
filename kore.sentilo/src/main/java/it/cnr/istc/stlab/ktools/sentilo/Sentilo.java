@@ -2,6 +2,7 @@ package it.cnr.istc.stlab.ktools.sentilo;
 
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +17,9 @@ import java.util.Set;
 import java.util.Vector;
 import java.io.*;
 import java.net.URL;
+import java.net.HttpURLConnection;
+
+import org.codehaus.jettison.json.JSONObject;
 
 import org.apache.clerezza.rdf.core.MGraph;
 import org.apache.clerezza.rdf.core.Triple;
@@ -1300,6 +1304,119 @@ public class Sentilo {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	/*
+		LAERTE:
+		This method queries a remote server with the full text to obtain the JSON containing the
+		anger, joy, fear, sadness values calculated with the DeepLearning approach implemented by
+		Laerte and Luca.
+
+		TODO: If the sentence is too long, split into multiple queries with sentences with the right size.
+	 */
+	private void sentiloDeepScore(String url){
+
+		String object= "";
+
+		for (org.apache.clerezza.rdf.core.Triple triple : tripleSentilo)
+		{
+			String predicate = triple.getPredicate().toString();
+			predicate = predicate.substring(predicate.indexOf("#")+1, predicate.length()-1);
+
+			object = triple.getObject().toString();
+			object = object.substring(object.indexOf("#")+1, object.length()-1);
+
+
+			if (predicate.equals("hasText")) {
+				break;
+			}
+
+		}
+
+		try {
+
+			String charset = "UTF-8";
+
+			String param = URLEncoder.encode(object, charset);
+
+			System.out.println("Trying to query: " + url + "?request=" + param);
+
+			InputStream response = new URL(url + "?request=" + param).openStream();
+
+			BufferedReader streamReader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
+			StringBuilder responseStrBuilder = new StringBuilder();
+
+			String inputStr;
+			while ((inputStr = streamReader.readLine()) != null)
+				responseStrBuilder.append(inputStr);
+
+
+			JSONObject json = new JSONObject(responseStrBuilder.toString());
+
+			String final_value = "";
+
+			Float sadness = Float.parseFloat(json.getString("sadness"));
+			Float anger = Float.parseFloat(json.getString("anger"));
+			Float joy = Float.parseFloat(json.getString("joy"));
+			Float fear = Float.parseFloat(json.getString("fear"));
+
+			if (sadness > anger && sadness > joy && sadness > fear)
+				final_value = "Sadness";
+			else if (anger > sadness && anger > joy && anger > fear)
+				final_value = "Anger";
+			else if (joy > anger && joy > fear && joy > sadness)
+				final_value = "Joy";
+			else
+				final_value = "Fear";
+
+			Triple finalDeepTriple = new TripleImpl(
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepSentiment"),
+					new PlainLiteralImpl(final_value)
+			);
+
+
+			tripleSentilo.add(finalDeepTriple);
+
+			/* Uncomment this if a triple for each value is needed
+			Triple tripleAnger = new TripleImpl(
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepAnger"),
+					new PlainLiteralImpl(json.getString("anger"))
+			);
+			Triple tripleJoy = new TripleImpl(
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepJoy"),
+					new PlainLiteralImpl(json.getString("joy"))
+			);
+			Triple tripleFear = new TripleImpl(
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepFear"),
+					new PlainLiteralImpl(json.getString("fear"))
+			);
+			Triple tripleSadness = new TripleImpl(
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
+					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepSadness"),
+					new PlainLiteralImpl(json.getString("sadness"))
+			);
+
+			tripleSentilo.add(tripleAnger);
+			tripleSentilo.add(tripleJoy);
+			tripleSentilo.add(tripleFear);
+			tripleSentilo.add(tripleSadness);
+			*/
+
+		}catch(Exception e){
+
+			System.out.println("Server is down or took too long to respond");
+
+		}
+
+
+
+
+
 	}
 
 
@@ -2776,6 +2893,17 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 14 {}", (end-start));
 
+
+		start = System.currentTimeMillis();
+		sentiloDeepScore("http://bardoz.ddns.net/predict");
+		end = System.currentTimeMillis();
+		log.info("Operation 15 {}", (end-start));
+
+
+		for (Triple t : tripleSentilo) {
+
+			System.out.println(t);
+		}
 	}
 
 	private org.apache.clerezza.rdf.core.Resource convertFromJenaResource(RDFNode rdfNode) {
