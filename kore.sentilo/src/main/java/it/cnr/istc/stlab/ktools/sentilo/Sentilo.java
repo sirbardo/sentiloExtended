@@ -1545,14 +1545,18 @@ public class Sentilo {
 		count /=8;
 		ArrayList<Triple> triples = new ArrayList<Triple>();
 
-		triples.add(new TripleImpl(
+		/*triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgMood"),
 				new PlainLiteralImpl(String.format("Af: %.3f, Am: %.3f, Ang: %.3f, Ann: %.3f, DC: %.3f, H: %.3f, I: %.3f, S: %.3f",
-						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count)))));
+						(afraid/count), (amused/count), (angry/count), (annoyed/count), (dontCare/count), (happy/count), (inspired/count), (sad/count)))));*/
 
 		//Uncomment this block to show a triple for each mood
-		/*triples.add(new TripleImpl(
+
+		if(count == 0)
+			return triples;
+
+		triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgAfraid"),
 				new PlainLiteralImpl(String.format("%.3f", afraid/count))));
@@ -1583,7 +1587,7 @@ public class Sentilo {
 		triples.add(new TripleImpl(
 				new UriRef(uriStr),
 				new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgSad"),
-				new PlainLiteralImpl(String.format("%.3f", sad/count))));*/
+				new PlainLiteralImpl(String.format("%.3f", sad/count))));
 
 		return triples;
 
@@ -2500,12 +2504,12 @@ public class Sentilo {
 						new PlainLiteralImpl(avg_str));
 
 				//Compute the Average mood triple
-				ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(ts.getTopic().replace("<", "").replace(">", ""));
+				/*ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(ts.getTopic().replace("<", "").replace(">", ""));
 
 				for(Triple t : avgMoodtriples){
 					tripleSentilo.add(t);
 				}
-				tripleSentilo.add(triple);
+				tripleSentilo.add(triple);*/
 
 			} else
 				avg_all = -999;
@@ -2579,11 +2583,11 @@ public class Sentilo {
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasAvgScore"),
 					new PlainLiteralImpl(avg_str));
 			//Compute the Average mood triple
-			ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(holder);
+			/*ArrayList<Triple> avgMoodtriples = getAvgMoodTriples(holder);
 			for(Triple t : avgMoodtriples){
 				tripleSentilo.add(t);
 			}
-			tripleSentilo.add(triple);
+			tripleSentilo.add(triple);*/
 
 		}
 	}
@@ -2893,17 +2897,22 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 14 {}", (end-start));
 
-
 		start = System.currentTimeMillis();
-		sentiloDeepScore("http://bardoz.ddns.net/predict");
+		ArrayList<Triple> avgMoodtriples = getAvgMoodTriples("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence");
+
+		for(Triple t : avgMoodtriples){
+			tripleSentilo.add(t);
+		}
 		end = System.currentTimeMillis();
 		log.info("Operation 15 {}", (end-start));
 
 
-		for (Triple t : tripleSentilo) {
+		start = System.currentTimeMillis();
+		sentiloDeepScore("http://bardoz.ddns.net/predict");
+		end = System.currentTimeMillis();
+		log.info("Operation 16 {}", (end-start));
 
-			System.out.println(t);
-		}
+
 	}
 
 	private org.apache.clerezza.rdf.core.Resource convertFromJenaResource(RDFNode rdfNode) {
