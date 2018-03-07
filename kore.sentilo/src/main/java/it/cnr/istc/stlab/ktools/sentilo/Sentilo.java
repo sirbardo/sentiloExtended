@@ -1369,7 +1369,7 @@ public class Sentilo {
 				final_value = "Joy";
 			else
 				final_value = "Fear";
-
+/*
 			Triple finalDeepTriple = new TripleImpl(
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepSentiment"),
@@ -1378,8 +1378,8 @@ public class Sentilo {
 
 
 			tripleSentilo.add(finalDeepTriple);
-
-			/* Uncomment this if a triple for each value is needed
+*/
+			//Uncomment this if a triple for each value is needed
 			Triple tripleAnger = new TripleImpl(
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#opinion_sentence"),
 					new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#hasDeepAnger"),
@@ -1405,7 +1405,7 @@ public class Sentilo {
 			tripleSentilo.add(tripleJoy);
 			tripleSentilo.add(tripleFear);
 			tripleSentilo.add(tripleSadness);
-			*/
+
 
 		}catch(Exception e){
 
