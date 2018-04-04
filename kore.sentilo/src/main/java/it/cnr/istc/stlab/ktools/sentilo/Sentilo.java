@@ -1408,7 +1408,7 @@ public class Sentilo {
 
 
 		}catch(Exception e){
-
+			e.printStackTrace();
 			System.out.println("Server is down or took too long to respond");
 
 		}
@@ -2908,7 +2908,7 @@ public class Sentilo {
 
 
 		start = System.currentTimeMillis();
-		sentiloDeepScore("localhost:27015/predict");
+		sentiloDeepScore("http://172.18.0.3:27015/predict");
 		end = System.currentTimeMillis();
 		log.info("Operation 16 {}", (end-start));
 

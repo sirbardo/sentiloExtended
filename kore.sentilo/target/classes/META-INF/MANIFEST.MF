@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1519302903784
+Bnd-LastModified: 1522849773688
 Build-Jdk: 1.8.0_161
 Built-By: root
 Bundle-Category: Tipalo
