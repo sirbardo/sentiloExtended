@@ -585,23 +585,28 @@ public class SentiloResource extends BaseTipaloResource {
 				        Double moodValue = Double.parseDouble(objectString);
                         source += "\"" + objectString + "\" [];\n ";
                         //Set a shade of orange based on the mood value
-				        if (moodValue < 0.2){
-				            colorliteral = " bgcolor='#FEC34D;'";
+				        if (moodValue < 0.07){
+				            colorliteral = " bgcolor='#FFe0B2;'";
                         }
-                        else if (moodValue < 0.4){
-                            colorliteral = " bgcolor='#FF9F00;'";
+                        else if (moodValue < 0.1){
+                            colorliteral = " bgcolor='#FFCC80;'";
                         }
-                        else if (moodValue < 0.6){
-                            colorliteral = " bgcolor='#FF8106;'";
+                        else if (moodValue < 0.15){
+                            colorliteral = " bgcolor='#FFB74D;'";
                         }
-                        else if (moodValue < 0.8){
-                            colorliteral = " bgcolor='#FF5C00;'";
+                        else if (moodValue < 0.25){
+                            colorliteral = " bgcolor='#FFA726;'";
                         }
                         else if (moodValue < 1.0){
-                            colorliteral = " bgcolor='#FF4023;'";
+                            colorliteral = " bgcolor='#FF9800;'";
                         }
 
                 }
+                if(predicateName.contains("hasDeepSentiment"))
+                    colorliteral = " bgcolor='#BA55D3'";
+
+				if(predicateName.contains("hasAvgMood"))
+				    colorliteral = " bgcolor='#00C78C'";
 			}
 
 			if(objectString.contains("opinion_trigger_context")==true || objectString.contains("opinionated_context")==true) {

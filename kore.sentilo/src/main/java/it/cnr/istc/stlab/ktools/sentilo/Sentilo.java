@@ -1443,7 +1443,7 @@ public class Sentilo {
 			if (moods == null)
 				moods = nounToMoods.get(word);
 		}
-		
+
 
 		System.out.println("Resource: "+resource+" Word: "+word);
 
@@ -1798,7 +1798,7 @@ public class Sentilo {
 
 	public void sentiloScore(Vector holder_pol_pos, Vector holder_pol_neg, Vector holder_act_true,
 			Vector holder_act_false) {
-			
+
 		// -------------------------
 		// Static results for testing
 		Triple triple = null;
@@ -2153,16 +2153,16 @@ public class Sentilo {
 			 * " dul:hasQuality ?quality . { { ?quality sentilo:hasScore ?score  FILTER NOT EXISTS {?quality sentilo:hasNewScore ?score} } UNION { ?quality sentilo:hasNewScore ?score } }  . ?quality boxing:hasTruthValue ?val bind ('4' as ?x) FILTER NOT EXISTS {"
 			 * +ts.getTopic()+" boxing:hasTruthValue ?value } } } "; //if(DEBUG)
 			 * // System.out.println("QUE:"+query2);
-			 * 
+			 *
 			 * model =
 			 * JenaToClerezzaConverter.clerezzaMGraphToJenaModel(tripleSentilo);
 			 * Query query_op1 = QueryFactory.create(query2, Syntax.syntaxARQ);
 			 * queryExecution = QueryExecutionFactory.create(query_op1, model);
 			 * com.hp.hpl.jena.query.ResultSet resultSet_out =
 			 * queryExecution.execSelect();
-			 * 
+			 *
 			 * while(resultSet_out.hasNext()) {
-			 * 
+			 *
 			 * QuerySolution sol = resultSet_out.next(); //String score =
 			 * sol.getLiteral("score").getLexicalForm().replaceAll("\"","");
 			 * //double score_num = Double.parseDouble(score); //triple = new
@@ -2179,9 +2179,9 @@ public class Sentilo {
 			 * "---------**********************a*********************** -SCORE REMOVED AND INSERTED-------"
 			 * +triple); //tripleSentilo.add(triple); //topicScoreSign =
 			 * (topicScoreSign == false) ? true : false; // QUESTA
-			 * 
+			 *
 			 * }
-			 * 
+			 *
 			 * // ho aggiunto il secondo pezzo dell'union query2 =
 			 * "PREFIX boxing: <http://www.ontologydesignpatterns.org/ont/boxer/boxing.owl#> "
 			 * +
@@ -2195,16 +2195,16 @@ public class Sentilo {
 			 * "+ts.getTopic()+" sentilo:participatesIn ?situation . ?situation
 			 * a boxing:Situation . ?situation boxing:hasTruthValue ?value } }
 			 * ";
-			 * 
+			 *
 			 * model =
 			 * JenaToClerezzaConverter.clerezzaMGraphToJenaModel(tripleSentilo);
 			 * query_op1 = QueryFactory.create(query2, Syntax.syntaxARQ);
 			 * queryExecution = QueryExecutionFactory.create(query_op1, model);
 			 * resultSet_out = queryExecution.execSelect();
-			 * 
+			 *
 			 * if(resultSet_out.hasNext()) topicScoreSign = (topicScoreSign ==
 			 * false) ? true : false;
-			 * 
+			 *
 			 * }
 			 */
 			// -------------------------
@@ -2288,13 +2288,13 @@ public class Sentilo {
 			 * " SELECT ?score WHERE { "+ts.getTopic()+
 			 * " ?rel ?node . ?node a ?nodetype . ?nodetype rdfs:subClassOf+ dul:Event . ?node sentilo:hasAvgScore ?score } "
 			 * ;
-			 * 
+			 *
 			 * System.out.println("QUERY_OPP:"+query_op); model =
 			 * JenaToClerezzaConverter.clerezzaMGraphToJenaModel(tripleSentilo);
 			 * query_op1 = QueryFactory.create(query_op, Syntax.syntaxARQ);
 			 * queryExecution = QueryExecutionFactory.create(query_op1, model);
 			 * res_qu = queryExecution.execSelect();
-			 * 
+			 *
 			 * while(res_qu.hasNext()) { QuerySolution sol = res_qu.next();
 			 * System.out.println("ANNI:"+sol.getLiteral("score"));
 			 * if(sol.getLiteral("score")!=null) { String score =
@@ -2425,7 +2425,7 @@ public class Sentilo {
 				 * Syntax.syntaxARQ); queryExecution =
 				 * QueryExecutionFactory.create(query_trig, model);
 				 * resultSet_trig = queryExecution.execSelect();
-				 * 
+				 *
 				 * if(resultSet_trig.hasNext()) { System.out.println(
 				 * "SITUATION is attached to topic and has truthValue"); Vector
 				 * tmp = pos; pos = neg; neg = tmp; for(int
@@ -2681,7 +2681,7 @@ public class Sentilo {
 
 
 		}catch(Exception e)
-		{			
+		{
 			System.out.println("^^^^ECCEZIONE^^^^");
 			System.out.println(e.getMessage());
 			System.out.println("^^^^ECCEZIONE^^^^");
@@ -2690,7 +2690,7 @@ public class Sentilo {
 
 
 		System.out.println("SENS:"+this.sensitiveness);
-		
+
 		if (error) {
 			tripleSentilo = new SimpleMGraph();
 			Triple newTriple = new TripleImpl(new UriRef("http://ontologydesignpatterns.org/ont/sentilo.owl#Error"),
@@ -2728,9 +2728,9 @@ public class Sentilo {
 
 		tripleSentilo = new SimpleMGraph();
 
-		
+
 		long start = System.currentTimeMillis();
-		
+
 		// add the four header nodes to tripleSentilo
 		addSentiHeaderNodes();
 
@@ -2751,13 +2751,13 @@ public class Sentilo {
 		//String sparql_simple1 = SparqlQuerySentilo.text_query + " } ";
 
 		// System.out.println(sparql_hat);
-		
+
 		Query query = QueryFactory.create(SparqlQuerySentilo.SELECT_QUERY, Syntax.syntaxARQ);
 		Model m = JenaToClerezzaConverter.clerezzaMGraphToJenaModel(tripleCollection);
 		long end = System.currentTimeMillis();
 		log.info("Operation 1.1-a {}", (end-start));
-		
-		
+
+
 		start = System.currentTimeMillis();
 		QueryExecution queryExecution = QueryExecutionFactory.create(query, m);
 		ResultSet resultSet = queryExecution.execSelect();
@@ -2765,9 +2765,9 @@ public class Sentilo {
 		while(resultSet.hasNext())
 			querySolutions.add(resultSet.next());
 		end = System.currentTimeMillis();
-		
+
 		log.info("Operation 1.1 {}", (end-start));
- 
+
 		// Looking for results for any query. Triggering first and, if any
 		// result is not found, look into the non-triggering
 		//boolean has_ret_hat = extractResult(sparql_hat);
@@ -2781,7 +2781,7 @@ public class Sentilo {
 		boolean has_ret_haf = extractResultNew(querySolutions, holder_act_false);
 		end = System.currentTimeMillis();
 		log.info("Operation 1.3 {}", (end-start));
-		
+
 		// System.out.println("RESULT FOR HOLDER POLARITY POSITIVE");
 		//boolean has_ret_hpp = extractResult(sparql_hpp);
 		start = System.currentTimeMillis();
@@ -2795,7 +2795,7 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 1.5 {}", (end-start));
 		*/
-		
+
 		start = System.currentTimeMillis();
 		//if (!has_ret_hat && !has_ret_haf && !has_ret_hpp && !has_ret_hpn) {
 		if (!has_ret_hat) {
@@ -2810,19 +2810,19 @@ public class Sentilo {
 				boolean has_ret_simple = extractResult(sparql_simple);
 			}
 		}
-		
+
 		end = System.currentTimeMillis();
-		
+
 		log.info("Operation 1.6 {}", (end-start));
 
 		// Vector discard = null;//FilterObjects(events);
 		// addTripleEvent(events);
-		
+
 		start = System.currentTimeMillis();
 		addTripleSentiElement(events, 2);
 		end = System.currentTimeMillis();
 		log.info("Operation 2 {}", (end-start));
-		
+
 		// discard = null;//FilterObjects(holders);
 		// addTripleHolder(holders);
 		start = System.currentTimeMillis();
@@ -2836,7 +2836,7 @@ public class Sentilo {
 		addTripleSentiElement(mtopics, 4);
 		end = System.currentTimeMillis();
 		log.info("Operation 4 {}", (end-start));
-		
+
 		// discard = null;//FilterObjects(subtopics);
 		// addTripleSubtopic(subtopics);
 		start = System.currentTimeMillis();
@@ -2844,7 +2844,7 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 5 {}", (end-start));
 
-		
+
 		start = System.currentTimeMillis();
 		addTripleDottedRelations();
 		end = System.currentTimeMillis();
@@ -2865,7 +2865,7 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 9 {}", (end-start));
 
-		
+
 		start = System.currentTimeMillis();
 		addOffsetTagNodes();
 		end = System.currentTimeMillis();
@@ -2883,20 +2883,19 @@ public class Sentilo {
 		log.info("Operation 12 {}", (end-start));
 
 		// DA QUI
-		start = System.currentTimeMillis();		
+		start = System.currentTimeMillis();
 		addSensitivenessRelations();
 		end = System.currentTimeMillis();
 		log.info("Operation 13 {}", (end-start));
-		
+
 		start = System.currentTimeMillis();
 		sentiloScore(holder_pol_pos, holder_pol_neg, holder_act_true, holder_act_false);
 		end = System.currentTimeMillis();
 		log.info("Operation 14 {}", (end-start))
 
-
-		//Laerte
+				
 		start = System.currentTimeMillis();
-		sentiloDeepScore("http://127.0.0.1:27015/predict");
+		sentiloDeepScore("http://bardoz.ddns.net/predict");
 		end = System.currentTimeMillis();
 		log.info("Operation 15 {}", (end-start));
 
