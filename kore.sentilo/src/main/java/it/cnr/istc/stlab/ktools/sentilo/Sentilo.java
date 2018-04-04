@@ -2893,9 +2893,10 @@ public class Sentilo {
 		end = System.currentTimeMillis();
 		log.info("Operation 14 {}", (end-start))
 
-				
+
+		//Laerte
 		start = System.currentTimeMillis();
-		sentiloDeepScore("http://bardoz.ddns.net/predict");
+		sentiloDeepScore("http://127.0.0.1:27015/predict");
 		end = System.currentTimeMillis();
 		log.info("Operation 15 {}", (end-start));
 
