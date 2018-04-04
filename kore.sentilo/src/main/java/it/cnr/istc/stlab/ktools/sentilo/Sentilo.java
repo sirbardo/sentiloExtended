@@ -2891,11 +2891,12 @@ public class Sentilo {
 		start = System.currentTimeMillis();
 		sentiloScore(holder_pol_pos, holder_pol_neg, holder_act_true, holder_act_false);
 		end = System.currentTimeMillis();
-		log.info("Operation 14 {}", (end-start));
+		log.info("Operation 14 {}", (end-start))
 
 
+		//Laerte
 		start = System.currentTimeMillis();
-		sentiloDeepScore("http://bardoz.ddns.net/predict");
+		sentiloDeepScore("http://127.0.0.1:27015/predict");
 		end = System.currentTimeMillis();
 		log.info("Operation 15 {}", (end-start));
 
